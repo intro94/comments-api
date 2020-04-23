@@ -1,0 +1,14 @@
+{
+    "name": "intro94/comments-api",
+    "type": "project",
+    "require": {
+        "php": "^7.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yuri Istomin",
+            "email": "intro1994@gmail.com"
+        }
+    ]
+}
