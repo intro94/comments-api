@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 interface CommentServiceContract
 {
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function getCommentList(): Collection;
+    public function getCommentList(): ?Collection;
 }

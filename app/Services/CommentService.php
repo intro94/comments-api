@@ -15,10 +15,11 @@ use Illuminate\Database\Eloquent\Collection;
 class CommentService implements CommentServiceContract
 {
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function getCommentList(): Collection
+    public function getCommentList(): ?Collection
     {
-        return Comment::all()->groupBy('parent_id');
+        $commentList = Comment::all()->groupBy('parent_id');
+        return $commentList->isNotEmpty() ? $commentList : null;
     }
 }
