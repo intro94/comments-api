@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Services\CommentServiceContract;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Class CommentController
@@ -11,9 +12,9 @@ use App\Contracts\Services\CommentServiceContract;
 class CommentController extends Controller
 {
     /**
-     * @return string
+     * @return JsonResponse
      */
-    public function list(): string
+    public function list(): JsonResponse
     {
         $commentList = app(CommentServiceContract::class)->getCommentList();
 
