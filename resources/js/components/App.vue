@@ -19,6 +19,14 @@
 <style lang="scss">
     @import '~bulma/css/bulma.css';
 
+    .columns {
+        margin: 0;
+    }
+
+    .reverse-columns {
+        flex-direction: row-reverse;
+    }
+
     .content-tree {
         padding: 0 1.5rem;
     }
