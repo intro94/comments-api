@@ -1,6 +1,9 @@
 <template>
         <div class="container content-tree-item">
-            <article class="media">
+            <article class="media deleted-comment" v-if="item.deleted_at || deleted">
+                This comment has been deleted
+            </article>
+            <article class="media" v-else>
                 <div class="media-content">
                     <div class="content">
                         <p>
@@ -17,7 +20,7 @@
                             <button class="button level-item">
                                 Edit
                             </button>
-                            <button class="button level-item">
+                            <button class="button level-item" @click="deleteComment(item.id)">
                                 Delete
                             </button>
                         </div>
@@ -64,7 +67,8 @@
         name: "CommentItem",
         data() {
             return {
-                replyCommentText: ''
+                replyCommentText: '',
+                deleted: false,
             }
         },
         props: {
@@ -99,7 +103,7 @@
                     })
                     .then(response => {
                         if (response.data.error)
-                            console.log('ERROR: ' + response.data.message);
+                            alert('ERROR: ' + response.data.message);
                         else if (response.data.data.createdComment !== null) {
                             this.resetReply();
                             this.$store.dispatch('addCommentToList', {
@@ -111,9 +115,30 @@
                     .catch(e => {
                         console.log('HTTP error: ' + e.response.status);
                         if (e.response.data.error && e.response.data.message)
-                            console.log('Message: ' + e.response.data.message);
-                        else
+                            alert(e.response.data.message);
+                        else {
                             console.log('Message: ' + e.response.statusText);
+                            alert('Unknown error');
+                        }
+                    });
+            },
+            deleteComment: function (id) {
+                axios.default.delete('/api/comments/'+id)
+                    .then(response => {
+                        if (response.data.error)
+                            alert('ERROR: ' + response.data.message);
+                        else {
+                            this.deleted = true;
+                        }
+                    })
+                    .catch(e => {
+                        console.log('HTTP error: ' + e.response.status);
+                        if (e.response.data.error && e.response.data.message)
+                            alert(e.response.data.message);
+                        else {
+                            console.log('Message: ' + e.response.statusText);
+                            alert('Unknown error');
+                        }
                     });
             }
         }
@@ -125,6 +150,11 @@
         padding-top: 0;
         padding-bottom: 0;
         height: inherit;
+    }
+
+    .deleted-comment {
+        background-color: #fffbeb;
+        color: #947600;
     }
 
     @media screen and (max-width: 1023px) {
