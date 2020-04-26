@@ -17,14 +17,21 @@ const router = new VueRouter({
 
 const store = new Vuex.Store({
     state: {
+        commentList: {},
         replyId: null
     },
     getters: {
+        getCommentList: state => {
+            return state.commentList;
+        },
         getReplyId: state => {
             return state.replyId;
         }
     },
     mutations: {
+        setCommentList(state, list) {
+            state.commentList = list;
+        },
         setReplyId(state, id) {
             state.replyId = id;
         },
@@ -33,6 +40,9 @@ const store = new Vuex.Store({
         }
     },
     actions: {
+        setCommentList(context, list) {
+            context.commit('setCommentList', list);
+        },
         setReplyId(context, id) {
             context.commit('setReplyId', id);
         },

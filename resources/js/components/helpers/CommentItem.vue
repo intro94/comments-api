@@ -54,7 +54,6 @@
                     :item="child"
                     :index="subIndex"
                     :key="child.id"
-                    :commentList="commentList"
                 />
             </div>
         </div>
@@ -69,10 +68,6 @@
             }
         },
         props: {
-            commentList: {
-                type: Object,
-                required: false
-            },
             item: {
                 type: Object,
                 required: true
@@ -83,6 +78,9 @@
             }
         },
         computed: {
+            commentList: function () {
+                return this.$store.getters.getCommentList;
+            },
             replyId: function () {
                 return this.$store.getters.getReplyId;
             }

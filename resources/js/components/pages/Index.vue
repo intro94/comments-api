@@ -43,7 +43,6 @@
                 :item="item"
                 :index="index"
                 :key="item.id"
-                :commentList="commentList"
             />
         </div>
     </div>
@@ -56,12 +55,14 @@
         name: "Index",
         data() {
             return {
-                commentList: [],
                 noComments: false,
                 replyCommentText: ''
             }
         },
         computed: {
+            commentList: function () {
+                return this.$store.getters.getCommentList;
+            },
             replyId: function () {
                 return this.$store.getters.getReplyId;
             }
@@ -83,7 +84,7 @@
                     else if (response.data.data.commentList === null)
                         this.noComments = true;
                     else
-                        this.commentList = response.data.data.commentList;
+                        this.$store.dispatch('setCommentList', response.data.data.commentList);
                 })
                 .catch(e => {
                     console.log(e);
