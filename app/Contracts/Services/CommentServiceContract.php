@@ -18,10 +18,10 @@ interface CommentServiceContract
 
     /**
      * @param string $replyCommentText
-     * @param int $parentComment
-     * @return Comment|null
+     * @param int $parentCommentId
+     * @return Comment
      */
-    public function createNewComment(string $replyCommentText, int $parentComment = 0): ?Comment;
+    public function createNewComment(string $replyCommentText, int $parentCommentId = 0): Comment;
 
     /**
      * @param string $updateCommentText

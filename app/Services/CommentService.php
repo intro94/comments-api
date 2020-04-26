@@ -26,13 +26,23 @@ class CommentService implements CommentServiceContract
 
     /**
      * @param string $replyCommentText
-     * @param int $parentComment
-     * @return Comment|null
+     * @param int $parentCommentId
+     * @return Comment
+     * @throws JsonException
      */
-    public function createNewComment(string $replyCommentText, int $parentComment = 0): ?Comment
+    public function createNewComment(string $replyCommentText, int $parentCommentId = 0): Comment
     {
+        if ($parentCommentId)
+        {
+            try {
+                $parentComment = Comment::findOrFail($parentCommentId);
+            } catch (\Exception $e) {
+                throw new JsonException('The specified comment does not exist', 404, $e->getCode(), $e);
+            }
+        }
+
         return Comment::create([
-            'parent_id' => $parentComment,
+            'parent_id' => $parentCommentId,
             'comment_text' => $replyCommentText,
         ]);
     }

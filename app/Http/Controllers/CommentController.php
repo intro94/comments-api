@@ -30,12 +30,12 @@ class CommentController extends Controller
 
     /**
      * @param CommentRequest $request
-     * @param int $parentComment
+     * @param int $parentCommentId
      * @return JsonResponse
      */
-    public function create(CommentRequest $request, int $parentComment = 0): JsonResponse
+    public function create(CommentRequest $request, int $parentCommentId = 0): JsonResponse
     {
-        $createdComment = app(CommentServiceContract::class)->createNewComment($request->post('replyCommentText'), $parentComment);
+        $createdComment = app(CommentServiceContract::class)->createNewComment($request->post('replyCommentText'), $parentCommentId);
 
         return response()->json([
             'error' => false,
