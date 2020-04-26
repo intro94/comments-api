@@ -14,10 +14,10 @@
                     </div>
                     <nav class="level is-mobile">
                         <div class="level-left">
-                            <button class="button level-item" @click="$store.dispatch('setReplyId', item.id)">
+                            <button class="button level-item" @click="drawForm('reply')">
                                 Reply
                             </button>
-                            <button class="button level-item">
+                            <button class="button level-item" @click="drawForm('edit')">
                                 Edit
                             </button>
                             <button class="button level-item" @click="deleteComment(item.id)">
@@ -29,7 +29,7 @@
             </article>
             <div v-if="replyId === item.id" class="columns reply-form">
                 <article class="column media">
-                    <form @submit.prevent="addComment(item.id)" class="media-content">
+                    <form @submit.prevent="sendForm" class="media-content">
                         <div class="field">
                             <p class="control">
                                 <label>
@@ -69,6 +69,7 @@
             return {
                 replyCommentText: '',
                 deleted: false,
+                action: 'reply'
             }
         },
         props: {
@@ -93,9 +94,26 @@
             getCommentsGroup: function (id) {
                 return this.commentList[id] ? this.commentList[id] : [];
             },
+            drawForm: function (action) {
+                this.$store.dispatch('setReplyId', this.item.id);
+                this.action = action;
+
+                if (action === 'edit')
+                    this.replyCommentText = this.item.comment_text;
+            },
             resetReply: function () {
                 this.$store.dispatch('resetReplyId');
                 this.replyCommentText = '';
+            },
+            sendForm: function () {
+                switch (this.action) {
+                    case 'reply':
+                        this.addComment(this.item.id);
+                        break;
+                    case 'edit':
+                        this.updateComment(this.item.id);
+                        break;
+                }
             },
             addComment: function (id) {
                 axios.default.post('/api/comments/'+id, {
@@ -109,6 +127,32 @@
                             this.$store.dispatch('addCommentToList', {
                                 groupId: id,
                                 commentItem: response.data.data.createdComment
+                            });
+                        }
+                    })
+                    .catch(e => {
+                        console.log('HTTP error: ' + e.response.status);
+                        if (e.response.data.error && e.response.data.message)
+                            alert(e.response.data.message);
+                        else {
+                            console.log('Message: ' + e.response.statusText);
+                            alert('Unknown error');
+                        }
+                    });
+            },
+            updateComment: function (id) {
+                axios.default.patch('/api/comments/'+id, {
+                        replyCommentText: this.replyCommentText
+                    })
+                    .then(response => {
+                        if (response.data.error)
+                            alert('ERROR: ' + response.data.message);
+                        else if (response.data.data.updatedComment !== null) {
+                            this.resetReply();
+                            this.$store.dispatch('updateComment', {
+                                groupId: this.item.parent_id,
+                                index: this.index,
+                                commentItem: response.data.data.updatedComment
                             });
                         }
                     })

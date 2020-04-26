@@ -46,6 +46,9 @@ const store = new Vuex.Store({
         },
         addCommentToList(state, payload) {
             state.commentList[payload.groupId].push(payload.commentItem);
+        },
+        updateComment(state, payload) {
+            state.commentList[payload.groupId][payload.index] = payload.commentItem;
         }
     },
     actions: {
@@ -69,6 +72,9 @@ const store = new Vuex.Store({
                 groupId: payload.groupId,
                 commentItem: payload.commentItem
             });
+        },
+        updateComment(context, payload) {
+            context.commit('updateComment', payload);
         }
     }
 });
