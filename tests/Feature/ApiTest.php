@@ -62,6 +62,22 @@ class ApiTest extends TestCase
     }
 
     /**
+     * add new comment to post without text
+     */
+    public function testAddEmptyComment()
+    {
+        $response = $this->postJson('/api/comments');
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                'error',
+                'message',
+                'data'
+            ]);
+    }
+
+    /**
      * reply to existent comment
      */
     public function testReplyComment()
@@ -120,6 +136,24 @@ class ApiTest extends TestCase
     }
 
     /**
+     * update nonexistent comment
+     */
+    public function testUpdateNonexistentComment()
+    {
+        $response = $this->patchJson('/api/comments/30', [
+            'replyCommentText' => 'Test Comment updated'
+        ]);
+
+        $response
+            ->assertStatus(404)
+            ->assertJsonStructure([
+                'error',
+                'message',
+                'data'
+            ]);
+    }
+
+    /**
      * delete existent comment
      */
     public function testDeleteComment()
@@ -128,5 +162,21 @@ class ApiTest extends TestCase
 
         $response
             ->assertStatus(204);
+    }
+
+    /**
+     * delete nonexistent comment
+     */
+    public function testDeleteNonexistentComment()
+    {
+        $response = $this->deleteJson('/api/comments/30');
+
+        $response
+            ->assertStatus(404)
+            ->assertJsonStructure([
+                'error',
+                'message',
+                'data'
+            ]);
     }
 }
