@@ -22,4 +22,10 @@ interface CommentServiceContract
      * @return Comment|null
      */
     public function createNewComment(string $replyCommentText, int $parentComment = 0): ?Comment;
+
+    /**
+     * @param int $commentId
+     * @return bool
+     */
+    public function deleteComment(int $commentId): bool;
 }

@@ -45,4 +45,15 @@ class CommentController extends Controller
             ]
         ], 201);
     }
+
+    public function delete(int $commentId): JsonResponse
+    {
+        return app(CommentServiceContract::class)->deleteComment($commentId)
+            ? response()->json([], 204)
+            : response()->json([
+                'error' => true,
+                'message' => 'Comment has not been deleted',
+                'data' => []
+            ], 200);
+    }
 }

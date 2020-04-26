@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Comment;
 use App\Contracts\Services\CommentServiceContract;
+use App\Exceptions\JsonException;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -34,5 +35,24 @@ class CommentService implements CommentServiceContract
             'parent_id' => $parentComment,
             'comment_text' => $replyCommentText,
         ]);
+    }
+
+    /**
+     * @param int $commentId
+     * @return bool
+     * @throws JsonException
+     */
+    public function deleteComment(int $commentId): bool
+    {
+        try {
+            $comment = Comment::findOrFail($commentId);
+            if ($comment) {
+                $comment->delete();
+            }
+        } catch (\Exception $e) {
+            throw new JsonException('The specified comment does not exist', 404, $e->getCode(), $e);
+        }
+
+        return true;
     }
 }
