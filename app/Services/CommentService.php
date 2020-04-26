@@ -20,7 +20,7 @@ class CommentService implements CommentServiceContract
      */
     public function getCommentList(): ?Collection
     {
-        $commentList = Comment::all()->groupBy('parent_id');
+        $commentList = Comment::withTrashed()->get()->groupBy('parent_id');
         return $commentList->isNotEmpty() ? $commentList : null;
     }
 
