@@ -4,7 +4,7 @@
 namespace App\Services;
 
 
-use App\Comment;
+use App\Models\Comment;
 use App\Contracts\Services\CommentServiceContract;
 use App\Exceptions\JsonException;
 use Illuminate\Database\Eloquent\Collection;

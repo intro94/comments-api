@@ -2,7 +2,7 @@
 
 namespace App\Contracts\Services;
 
-use App\Comment;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
