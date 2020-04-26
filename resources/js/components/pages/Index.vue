@@ -10,7 +10,7 @@
         </div>
         <div v-if="replyId === 0" class="columns">
             <article class="column media">
-                <form @submit.prevent="addComment(0)" class="media-content">
+                <form @submit.prevent="addComment" class="media-content">
                     <div class="field">
                         <p class="control">
                             <label>
@@ -75,8 +75,28 @@
                 this.$store.dispatch('resetReplyId');
                 this.replyCommentText = '';
             },
-            addComment: function (id) {
-                // TODO: add post query
+            addComment: function () {
+                axios.default.post('/api/comments', {
+                    replyCommentText: this.replyCommentText
+                })
+                    .then(response => {
+                        if (response.data.error)
+                            console.log('ERROR: ' + response.data.message);
+                        else if (response.data.data.createdComment !== null) {
+                            this.resetReply();
+                            this.$store.dispatch('addCommentToList', {
+                                groupId: 0,
+                                commentItem: response.data.data.createdComment
+                            });
+                        }
+                    })
+                    .catch(e => {
+                        console.log('HTTP error: ' + e.response.status);
+                        if (e.response.data.error && e.response.data.message)
+                            console.log('Message: ' + e.response.data.message);
+                        else
+                            console.log('Message: ' + e.response.statusText);
+                    });
             }
         },
         mounted() {

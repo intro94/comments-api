@@ -40,6 +40,12 @@ const store = new Vuex.Store({
         },
         resetReplyId(state) {
             state.replyId = null;
+        },
+        addCommentGroup(state, groupId) {
+            state.commentList[groupId] = [];
+        },
+        addCommentToList(state, payload) {
+            state.commentList[payload.groupId].push(payload.commentItem);
         }
     },
     actions: {
@@ -54,6 +60,15 @@ const store = new Vuex.Store({
         },
         resetReplyId(context) {
             context.commit('resetReplyId');
+        },
+        addCommentToList(context, payload) {
+            if (!context.getters.getCommentList[payload.groupId])
+                context.commit('addCommentGroup', payload.groupId);
+
+            context.commit('addCommentToList', {
+                groupId: payload.groupId,
+                commentItem: payload.commentItem
+            });
         }
     }
 });

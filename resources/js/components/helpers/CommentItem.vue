@@ -94,7 +94,27 @@
                 this.replyCommentText = '';
             },
             addComment: function (id) {
-                // TODO: add post query
+                axios.default.post('/api/comments/'+id, {
+                        replyCommentText: this.replyCommentText
+                    })
+                    .then(response => {
+                        if (response.data.error)
+                            console.log('ERROR: ' + response.data.message);
+                        else if (response.data.data.createdComment !== null) {
+                            this.resetReply();
+                            this.$store.dispatch('addCommentToList', {
+                                groupId: id,
+                                commentItem: response.data.data.createdComment
+                            });
+                        }
+                    })
+                    .catch(e => {
+                        console.log('HTTP error: ' + e.response.status);
+                        if (e.response.data.error && e.response.data.message)
+                            console.log('Message: ' + e.response.data.message);
+                        else
+                            console.log('Message: ' + e.response.statusText);
+                    });
             }
         }
     }
