@@ -24,6 +24,6 @@ class CommentController extends Controller
             'data' => [
                 'commentList' => $commentList
             ]
-        ]);
+        ], 200);
     }
 }
