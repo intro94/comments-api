@@ -39,7 +39,7 @@
             </div>
 
             <CommentItem
-                v-for="(item, index) in commentList[0]"
+                v-for="(item, index) in getCommentsGroup(0)"
                 :item="item"
                 :index="index"
                 :key="item.id"
@@ -68,6 +68,9 @@
             }
         },
         methods: {
+            getCommentsGroup: function (id) {
+                return this.commentList[id] ? this.commentList[id] : [];
+            },
             resetReply: function () {
                 this.$store.dispatch('resetReplyId');
                 this.replyCommentText = '';

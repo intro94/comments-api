@@ -50,7 +50,7 @@
 
             <div class="container content-tree-nested">
                 <CommentItem
-                    v-for="(child, subIndex) in getChildren(item.id)"
+                    v-for="(child, subIndex) in getCommentsGroup(item.id)"
                     :item="child"
                     :index="subIndex"
                     :key="child.id"
@@ -86,7 +86,7 @@
             }
         },
         methods: {
-            getChildren: function (id) {
+            getCommentsGroup: function (id) {
                 return this.commentList[id] ? this.commentList[id] : [];
             },
             resetReply: function () {
