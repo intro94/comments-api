@@ -38,6 +38,25 @@ class CommentService implements CommentServiceContract
     }
 
     /**
+     * @param string $updateCommentText
+     * @param int $commentId
+     * @return Comment
+     * @throws JsonException
+     */
+    public function updateComment(string $updateCommentText, int $commentId): Comment
+    {
+        try {
+            $comment = Comment::findOrFail($commentId);
+            $comment->comment_text = $updateCommentText;
+            $comment->save();
+        } catch (\Exception $e) {
+            throw new JsonException('The specified comment does not exist', 404, $e->getCode(), $e);
+        }
+
+        return $comment;
+    }
+
+    /**
      * @param int $commentId
      * @return bool
      * @throws JsonException

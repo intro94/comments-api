@@ -19,3 +19,5 @@ Route::get('/comments', 'CommentController@list');
 Route::post('/comments/{id?}', 'CommentController@create');
 
 Route::delete('/comments/{id}', 'CommentController@delete');
+
+Route::patch('/comments/{id}', 'CommentController@update');

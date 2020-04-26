@@ -46,6 +46,28 @@ class CommentController extends Controller
         ], 201);
     }
 
+    /**
+     * @param CommentRequest $request
+     * @param int $commentId
+     * @return JsonResponse
+     */
+    public function update(CommentRequest $request, int $commentId): JsonResponse
+    {
+        $updatedComment = app(CommentServiceContract::class)->updateComment($request->post('replyCommentText'), $commentId);
+
+        return response()->json([
+            'error' => false,
+            'message' =>'',
+            'data' => [
+                'updatedComment' => $updatedComment
+            ]
+        ], 201);
+    }
+
+    /**
+     * @param int $commentId
+     * @return JsonResponse
+     */
     public function delete(int $commentId): JsonResponse
     {
         return app(CommentServiceContract::class)->deleteComment($commentId)

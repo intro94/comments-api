@@ -24,6 +24,13 @@ interface CommentServiceContract
     public function createNewComment(string $replyCommentText, int $parentComment = 0): ?Comment;
 
     /**
+     * @param string $updateCommentText
+     * @param int $commentId
+     * @return Comment
+     */
+    public function updateComment(string $updateCommentText, int $commentId): Comment;
+
+    /**
      * @param int $commentId
      * @return bool
      */
