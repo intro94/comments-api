@@ -15,6 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // load helpers
+        require_once $this->app->path('Helpers'.DIRECTORY_SEPARATOR.'System.php');
+
+        // load services
         $this->app->singleton(CommentServiceContract::class, function () {
             return new CommentService();
         });
