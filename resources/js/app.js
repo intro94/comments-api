@@ -32,6 +32,9 @@ const store = new Vuex.Store({
         setCommentList(state, list) {
             state.commentList = list;
         },
+        resetCommentList(state) {
+            state.commentList = {};
+        },
         setReplyId(state, id) {
             state.replyId = id;
         },
@@ -42,6 +45,9 @@ const store = new Vuex.Store({
     actions: {
         setCommentList(context, list) {
             context.commit('setCommentList', list);
+        },
+        resetCommentList(context) {
+            context.commit('resetCommentList');
         },
         setReplyId(context, id) {
             context.commit('setReplyId', id);

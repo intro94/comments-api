@@ -85,12 +85,22 @@
                     if (response.data.error)
                         console.log('ERROR: ' + response.data.message);
                     else if (response.data.data.commentList === null)
+                    {
+                        this.$store.dispatch('resetCommentList');
                         this.noComments = true;
+                    }
                     else
                         this.$store.dispatch('setCommentList', response.data.data.commentList);
                 })
                 .catch(e => {
-                    console.log(e);
+                    this.$store.dispatch('resetCommentList');
+                    this.noComments = true;
+
+                    console.log('HTTP error: ' + e.response.status);
+                    if (e.response.data.error && e.response.data.message)
+                        console.log('Message: ' + e.response.data.message);
+                    else
+                        console.log('Message: ' + e.response.statusText)
                 });
         },
         components: {
