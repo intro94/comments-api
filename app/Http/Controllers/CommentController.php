@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\Services\CommentServiceContract;
+use App\Http\Requests\CommentRequest;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -25,5 +26,23 @@ class CommentController extends Controller
                 'commentList' => $commentList
             ]
         ], 200);
+    }
+
+    /**
+     * @param CommentRequest $request
+     * @param int $parentComment
+     * @return JsonResponse
+     */
+    public function create(CommentRequest $request, int $parentComment = 0): JsonResponse
+    {
+        $createdComment = app(CommentServiceContract::class)->createNewComment($request->post('replyCommentText'), $parentComment);
+
+        return response()->json([
+            'error' => false,
+            'message' =>'',
+            'data' => [
+                'createdComment' => $createdComment
+            ]
+        ], 201);
     }
 }

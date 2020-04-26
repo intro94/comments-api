@@ -22,4 +22,17 @@ class CommentService implements CommentServiceContract
         $commentList = Comment::all()->groupBy('parent_id');
         return $commentList->isNotEmpty() ? $commentList : null;
     }
+
+    /**
+     * @param string $replyCommentText
+     * @param int $parentComment
+     * @return Comment|null
+     */
+    public function createNewComment(string $replyCommentText, int $parentComment = 0): ?Comment
+    {
+        return Comment::create([
+            'parent_id' => $parentComment,
+            'comment_text' => $replyCommentText,
+        ]);
+    }
 }
